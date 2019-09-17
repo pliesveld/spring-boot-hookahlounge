@@ -1,0 +1,84 @@
+package tutorial.service;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import tutorial.domain.BasicInventory;
+import tutorial.domain.Hooka;
+import tutorial.domain.Order;
+import tutorial.domain.ShishaInventory;
+import tutorial.domain.SmokeableHooka;
+import tutorial.exceptions.ProductNotFound;
+import tutorial.repository.BasicInventoryRepository;
+import tutorial.repository.HookaRepository;
+import tutorial.repository.ShishaInventoryRepository;
+
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+@Service
+@Transactional
+public class HookaService {
+	@Autowired
+	private HookaRepository hookaRepository;
+	
+	@Autowired
+	private BasicInventoryRepository basicInventoryRepository;
+	
+	@Autowired
+	private ShishaInventoryRepository shishaInventoryRepository;
+	
+	
+	public HookaService() {
+	}
+	
+	public SmokeableHooka prepareHooka(@Valid Order order) {
+		
+		int req_hoses = order.getHoses();
+		Predicate<Hooka> pred = (h -> h.getHoses() == req_hoses);
+		Optional<Hooka> findFirst = hookaRepository.findAllByDirtyIsFalse().filter(pred).findFirst();
+		
+		Hooka hooka = findFirst.orElseThrow(ProductNotFound::noHooka);
+		hooka.setDirty(true);
+		
+		String orderFlavor = order.getFlavor();
+		ShishaInventory shishaInventory = shishaInventoryRepository.findByFlavor(orderFlavor);
+
+		Objects.requireNonNull(shishaInventory,"no shisha found " + orderFlavor);
+		
+		shishaInventory.setQuantity(shishaInventory.getQuantity() - 10);
+		
+		BasicInventory coals = basicInventoryRepository.findById("coals").orElseThrow(ProductNotFound::noCoals);
+		
+		BasicInventory disposableHose = basicInventoryRepository.findById("hose").orElseThrow(ProductNotFound::noHoses);
+		
+		if(coals.getCount() < 6) {
+			throw new RuntimeException("not enough coals");
+		}
+		
+		coals.setCount(coals.getCount() - 6);
+		
+		if(disposableHose.getCount() < req_hoses) {
+			throw new RuntimeException("not enough hoses" + req_hoses);
+		}
+		
+		disposableHose.setCount(disposableHose.getCount() - req_hoses);
+		
+		SmokeableHooka smokeableHooka = new SmokeableHooka(hooka);
+
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+			public void afterCommit() {	
+				System.out.println("PUBLISH EVENT");
+			};
+		});
+		
+		return smokeableHooka;
+	}
+}
