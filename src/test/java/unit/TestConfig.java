@@ -1,4 +1,4 @@
-package tutorial.test.config;
+package unit;
 
 import java.util.Properties;
 

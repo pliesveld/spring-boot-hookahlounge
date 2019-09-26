@@ -14,7 +14,6 @@ import tutorial.domain.Order;
 import tutorial.service.HookaService;
 
 @RestController
-@Transactional
 public class HookaController {
 	
 	@Autowired
@@ -22,7 +21,7 @@ public class HookaController {
 
 	@RequestMapping(path = "/all")
 	public ResponseEntity<?> getAllHookas() {
-		return ResponseEntity.ok("all");
+		return ResponseEntity.ok(hookaService.fetchAllHookas());
 	}
 
 	@RequestMapping(path = "/hooka", method = RequestMethod.POST)

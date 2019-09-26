@@ -8,6 +8,8 @@ group = 'tutorial'
 version = 'SNAPSHOT'
 sourceCompatibility = '1.8'
 
+apply plugin: 'groovy'
+
 configurations {
 	developmentOnly
 	runtimeClasspath {
@@ -31,5 +33,14 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+
+
+    implementation 'javax.interceptor:javax.interceptor-api:1.2'
+    testImplementation 'org.codehaus.groovy:groovy-all:2.5.7'
+	testImplementation 'org.spockframework:spock-core:1.2-groovy-2.4'
+	testImplementation 'org.spockframework:spock-spring:1.2-groovy-2.4'
+    testImplementation 'io.rest-assured:rest-assured:4.0.0'
+    testImplementation 'io.rest-assured:json-path:4.0.0'
+    testImplementation 'io.rest-assured:xml-path:4.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

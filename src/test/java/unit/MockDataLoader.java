@@ -1,4 +1,4 @@
-package tutorial.test.data;
+package unit;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;

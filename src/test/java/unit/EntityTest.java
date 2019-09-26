@@ -1,8 +1,4 @@
-package tutorial.test;
-
-import tutorial.test.data.MockDataLoader;
-
-
+package unit;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -14,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.hamcrest.core.IsEqual;
 import org.hibernate.PersistentObjectException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import tutorial.HookahloungeApplication;
 import tutorial.domain.Hooka;
-import tutorial.test.config.TestConfig;
 
 @RunWith(SpringRunner.class)
 @ContextHierarchy({
@@ -97,7 +93,8 @@ public class EntityTest {
 //		assertThat(entityManager.find(Hooka.class, 1L).getHoses(), not(IsEqual.equalTo(50)));
 	}
 	
-	
+
+	@Ignore
 	@Test(expected = PersistentObjectException.class)
 	public void persistentObjectException() {
 		Hooka detached = new Hooka();

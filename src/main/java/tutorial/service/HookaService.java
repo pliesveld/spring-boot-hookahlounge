@@ -1,8 +1,11 @@
 package tutorial.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -81,4 +84,12 @@ public class HookaService {
 		
 		return smokeableHooka;
 	}
+
+    public List<Hooka> fetchAllHookas() {
+		Iterable<Hooka> iterable =  hookaRepository.findAll();
+		List<Hooka> actualList = StreamSupport
+			.stream(iterable.spliterator(), false)
+			.collect(Collectors.toList());
+		return actualList;
+    }
 }
