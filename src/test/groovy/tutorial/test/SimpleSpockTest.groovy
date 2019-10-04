@@ -1,27 +1,10 @@
 package tutorial.test
 
 import groovy.json.JsonOutput
-import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import tutorial.domain.OrderRequest
 
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
-import tutorial.HookahloungeApplication
-
-import io.restassured.RestAssured
-import tutorial.domain.Order
-
-import static io.restassured.RestAssured.config
-import static io.restassured.matcher.RestAssuredMatchers.*
-import static org.hamcrest.Matchers.*
-
-import static org.junit.Assert.*
 import static io.restassured.RestAssured.*
-
-
-
-
-import org.junit.Test
 
 class SimpleSpockTest extends BaseSpockTest {
 
@@ -43,7 +26,7 @@ class SimpleSpockTest extends BaseSpockTest {
 	def "test /api/hooka"() {
 		given:
 			def request = given()
-			def order = new Order()
+			def order = new OrderRequest()
 				order.setFlavor("strawberry")
 				order.setHoses(2)
 				order.setHeadSize("jumbo")

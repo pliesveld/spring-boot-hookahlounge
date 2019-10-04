@@ -1,36 +1,84 @@
 package tutorial.domain;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.Range;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
+@Entity
+@Table(name = "ORDERS")
 public class Order {
-	@NotNull
-	private String flavor;
-	
-	@NotNull
-	private String headSize;
 
-	@Range(min = 2, max = 4)
-	private int hoses;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public String getFlavor() {
-		return flavor;
-	}
-	public void setFlavor(String flavor) {
-		this.flavor = flavor;
-	}
-	public int getHoses() {
-		return hoses;
-	}
-	public void setHoses(int hoses) {
-		this.hoses = hoses;
-	}
-	public String getHeadSize() {
-		return headSize;
-	}
-	public void setHeadSize(String headSize) {
-		this.headSize = headSize;
-	}
+    private LocalTime orderTime;
 
+    private Integer tableNumber;
+
+    @OneToMany
+    @JoinTable
+    private Collection<Product> orderedProducts = new ArrayList<>();
+
+    private String status;
+
+    private OrderStatus status2;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalTime getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(LocalTime orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public Integer getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(Integer tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public Collection<Product> getOrderedProducts() {
+        return orderedProducts;
+    }
+
+    public void setOrderedProducts(Collection<Product> orderedProducts) {
+        this.orderedProducts = orderedProducts;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public OrderStatus getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(OrderStatus status2) {
+        this.status2 = status2;
+    }
 }

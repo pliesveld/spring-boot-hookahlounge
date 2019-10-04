@@ -14,8 +14,6 @@ public class BasicInventory {
 	
 	private Integer count;
 
-	private String SKU = "1234567";
-	
 	public String getId() {
 		return id;
 	}
@@ -31,14 +29,5 @@ public class BasicInventory {
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-
-	public String getSKU() {
-		return SKU;
-	}
-
-	public void setSKU(String sKU) {
-		SKU = sKU;
-	}
-	
 	
 }

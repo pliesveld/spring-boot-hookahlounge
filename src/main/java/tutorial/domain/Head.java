@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table
 public class Head {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	@Column(updatable = false, nullable = false)
 	private String size;

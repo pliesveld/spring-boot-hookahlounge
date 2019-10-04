@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import tutorial.domain.BasicInventory;
 import tutorial.domain.Hooka;
-import tutorial.domain.Order;
+import tutorial.domain.OrderRequest;
 import tutorial.domain.ShishaInventory;
 import tutorial.domain.SmokeableHooka;
 import tutorial.exceptions.ProductNotFound;
@@ -42,16 +42,16 @@ public class HookaService {
 	public HookaService() {
 	}
 	
-	public SmokeableHooka prepareHooka(@Valid Order order) {
+	public SmokeableHooka prepareHooka(@Valid OrderRequest orderRequest) {
 		
-		int req_hoses = order.getHoses();
+		int req_hoses = orderRequest.getHoses();
 		Predicate<Hooka> pred = (h -> h.getHoses() == req_hoses);
 		Optional<Hooka> findFirst = hookaRepository.findAllByDirtyIsFalse().filter(pred).findFirst();
 		
 		Hooka hooka = findFirst.orElseThrow(ProductNotFound::noHooka);
 		hooka.setDirty(true);
 		
-		String orderFlavor = order.getFlavor();
+		String orderFlavor = orderRequest.getFlavor();
 		ShishaInventory shishaInventory = shishaInventoryRepository.findByFlavor(orderFlavor);
 
 		Objects.requireNonNull(shishaInventory,"no shisha found " + orderFlavor);
